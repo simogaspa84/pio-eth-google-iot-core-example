@@ -21,8 +21,8 @@ const char *registry_id = "warehouse-01";
 const char *device_id = "board_2022704";
 
 // Configuration for NTP
-const char* ntp_primary = "pool.ntp.org";
-const char* ntp_secondary = "time.nist.gov";
+const char *ntp_primary = "pool.ntp.org";
+const char *ntp_secondary = "time.nist.gov";
 
 #ifndef LED_BUILTIN
 #define LED_BUILTIN 13
@@ -36,11 +36,10 @@ const char* ntp_secondary = "time.nist.gov";
 // of hex digits). If it's bigger and it starts with "00:" delete the "00:". If
 // it's smaller add "00:" to the start. If it's too big or too small something
 // is probably wrong with your key.
-const char *private_key_str =
-    "58:da:94:64:15:29:fd:c6:5b:b0:a1:1d:a9:3f:e0:1f:4c:c8:4c:88:c6:b5:42:49:a9:a6:9a:9a:78:3d:b3:f3";
+const char *private_key_str = "4c:0a:17:e6:25:7b:fc:58:41:0c:dc:a3:55:f7:3c:11:6b:ac:f8:79:16:42:3a:de:d5:8d:b7:1e:7b:bb:a8:62";
 
 // Time (seconds) to expire token += 20 minutes for drift
-const int jwt_exp_secs = 60*20; // Maximum 24H (3600*24)
+const int jwt_exp_secs = 60 * 20; // Maximum 24H (3600*24)
 
 // To get the certificate for your region run:
 //   openssl s_client -showcerts -connect mqtt.googleapis.com:8883
@@ -72,8 +71,8 @@ const char *root_cert =
 
 // In case we ever need extra topics
 const int ex_num_topics = 0;
-const char* ex_topics[ex_num_topics];
-//const int ex_num_topics = 1;
-//const char* ex_topics[ex_num_topics] = {
-//  "/devices/my-device/tbd/#"
-//};
+const char *ex_topics[ex_num_topics];
+// const int ex_num_topics = 1;
+// const char* ex_topics[ex_num_topics] = {
+//   "/devices/my-device/tbd/#"
+// };
