@@ -22,7 +22,7 @@ byte mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED};
 unsigned long lastMillis = 0;
 SPIClass ethernetSPI(ETH_SPI_BUS);
 EthernetClient ethClient;
-SSLClient ethSSLClient(ethClient, TAs, (size_t)TAs_NUM, ANALOG_PIN_FOR_ENTROPY, MAX_SSL_SESSIONS, SSL_DEBUG_LEVEL);
+SSLClient ethSSLClient(ethClient, TAs_GOOGLE, (size_t)TAs_NUM, ANALOG_PIN_FOR_ENTROPY, MAX_SSL_SESSIONS, SSL_DEBUG_LEVEL);
 
 extern "C" void C_HexDump(const uint8_t *buff, size_t len)
 {
