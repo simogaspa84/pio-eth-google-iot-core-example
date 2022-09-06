@@ -81,3 +81,11 @@ void loop_eth_google()
     publishTelemetry(getDefaultSensor());
   }
 }
+
+void setup()
+{
+}
+
+void loop()
+{
+}
