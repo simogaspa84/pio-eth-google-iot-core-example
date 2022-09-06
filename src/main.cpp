@@ -93,9 +93,10 @@ void loop()
     connect();
   }
 
-  if (millis() - lastMillis > 60000)
+  if (millis() - lastMillis > 6000)
   {
     lastMillis = millis();
+    Serial.print("Entro");
     publishTelemetry(getDefaultSensor());
   }
 }

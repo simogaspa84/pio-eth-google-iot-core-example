@@ -33,7 +33,8 @@
 // !!REPLACEME!!
 // The MQTT callback function for commands and configuration updates
 // Place your message handler code here.
-void messageReceived(String &topic, String &payload){
+void messageReceived(String &topic, String &payload)
+{
   Serial.println("incoming: " + topic + " - " + payload);
 }
 ///////////////////////////////
@@ -46,7 +47,7 @@ MQTTClient *mqttClient;
 unsigned long iat = 0;
 String jwt;
 
-#define NTP_TIME_OFFSET_SECONDS 0 //0h in seconds
+#define NTP_TIME_OFFSET_SECONDS 0       // 0h in seconds
 #define NTP_TIME_REFRESH_INTERVAL 60000 // 60s min milliseconds
 EthernetUDP ethernetUdpClient;
 NTPClient timeClient(ethernetUdpClient, ntp_primary, NTP_TIME_OFFSET_SECONDS, NTP_TIME_REFRESH_INTERVAL);
@@ -54,36 +55,29 @@ NTPClient timeClient(ethernetUdpClient, ntp_primary, NTP_TIME_OFFSET_SECONDS, NT
 ///////////////////////////////
 // Helpers specific to this board
 ///////////////////////////////
-String getDefaultSensor(){
+String getDefaultSensor()
+{
   // return "Wifi: " + String(WiFi.RSSI()) + "db";
   return "LAN: 99 db";
 }
 
-String getJwt(){
+String getJwt()
+{
   iat = time(nullptr);
   Serial.println("Refreshing JWT");
   jwt = device->createJWT(iat, jwt_exp_secs);
   return jwt;
 }
 
-void setupLan(){
+void setupLan()
+{
   Serial.println("Starting LAN");
-
-  /*WiFi.mode(WIFI_STA);
-  // WiFi.setSleep(false); // May help with disconnect? Seems to have been removed from WiFi
-  WiFi.begin(ssid, password);
-  Serial.println("Connecting to WiFi");
-  while (WiFi.status() != WL_CONNECTED){
-    delay(100);
-  }*/
-
-  // todo figure this out with an alternative library
-  // configTime(0, 0, ntp_primary, ntp_secondary);
   Serial.println("Waiting on time sync...");
 
   timeClient.begin();
   bool ok = timeClient.forceUpdate();
-  if(ok) {
+  if (ok)
+  {
     Serial.println("NTP update okay!");
     Serial.println("It is: " + timeClient.getFormattedTime());
     unsigned long timestamp = timeClient.getEpochTime();
@@ -91,39 +85,48 @@ void setupLan(){
     // Set as system time
     struct timeval now;
     int rc;
-    now.tv_sec = (time_t) timestamp;
+    now.tv_sec = (time_t)timestamp;
     now.tv_usec = 0;
     rc = settimeofday(&now, NULL);
-    if(rc==0) {
-        Serial.println("settimeofday() successful.");
+    if (rc == 0)
+    {
+      Serial.println("settimeofday() successful.");
     }
-    else {
-        Serial.println("settimeofday() failed, errno = " + String(errno));
+    else
+    {
+      Serial.println("settimeofday() failed, errno = " + String(errno));
     }
-  } else {
+  }
+  else
+  {
     Serial.println("NTP failed!!");
   }
   timeClient.end();
 
   time_t rawtime;
   struct tm *info;
-  char buffer[80];  time( &rawtime );
-  info = localtime( &rawtime );
+  char buffer[80];
+  time(&rawtime);
+  info = localtime(&rawtime);
   strftime(buffer, 80, "%x - %I:%M%p", info);
-  Serial.println("Current date + time: "  + String(buffer));
+  Serial.println("Current date + time: " + String(buffer));
 
   // before Tue Nov 14 2017 07:36:07 GMT+0000? we did not sync correctly..
-  if (time(nullptr) < 1510644967){
+  if (time(nullptr) < 1510644967)
+  {
     Serial.println("NTP sync failed, time is behind..");
-  } else {
+  }
+  else
+  {
     Serial.println("NTP sync time sanity check passed.");
-
   }
 }
 
-void connectLan(){
+void connectLan()
+{
   Serial.print("Waiting for LAN cable connected..");
-  while(Ethernet.linkStatus() != LinkON) {
+  while (Ethernet.linkStatus() != LinkON)
+  {
     Serial.print(".");
     delay(1000);
   }
@@ -133,41 +136,44 @@ void connectLan(){
 ///////////////////////////////
 // Orchestrates various methods from preceeding code.
 ///////////////////////////////
-bool publishTelemetry(String data){
+bool publishTelemetry(String data)
+{
   return mqtt->publishTelemetry(data);
 }
 
-bool publishTelemetry(const char *data, int length){
+bool publishTelemetry(const char *data, int length)
+{
   return mqtt->publishTelemetry(data, length);
 }
 
-bool publishTelemetry(String subfolder, String data){
+bool publishTelemetry(String subfolder, String data)
+{
   return mqtt->publishTelemetry(subfolder, data);
 }
 
-bool publishTelemetry(String subfolder, const char *data, int length){
+bool publishTelemetry(String subfolder, const char *data, int length)
+{
   return mqtt->publishTelemetry(subfolder, data, length);
 }
 
-void connect(){
+void connect()
+{
   connectLan();
   mqtt->mqttConnect();
 }
 
-void setupCloudIoT(SSLClient* sslClient){
+void setupCloudIoT(SSLClient *sslClient)
+{
   device = new CloudIoTCoreDevice(
       project_id, location, registry_id, device_id,
       private_key_str);
 
   setupLan();
-  netClient = sslClient; //= new WiFiClientSecure();
   // already handled by initializing the sslClient with the proper certificate
-  //netClient->setCACert(root_cert);
+  netClient = sslClient;
   mqttClient = new MQTTClient(512);
   mqttClient->setOptions(180, true, 1000); // keepAlive, cleanSession, timeout
   mqtt = new CloudIoTCoreMqtt(mqttClient, netClient, device);
-  // decides whether to use mqtt.2030.ltsapis.goog or mqtt.googleapis.com
-  // both port 8883
   mqtt->setUseLts(true);
   mqtt->startMQTT();
 }
