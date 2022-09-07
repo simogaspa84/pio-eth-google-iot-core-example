@@ -1,25 +1,19 @@
 #include <Arduino.h>
 #include <SPI.h>
 #include <Ethernet.h>
+#include "Ethernet_pinout_setting.h"
 #include <PubSubClient.h>
-#include "AWS_security.h"
 #include <SSL_Utility/EthernetWebServer_SSL.h>
-
-#define ETH_SPI_BUS HSPI
-#define ETH_MOSI 13
-#define ETH_MISO 12
-#define ETH_SCLK 14
-#define ETH_CS 15
+#include "AWS_security.h"
 
 void MQTTPublish(const char *topic, char *payload);
 void updateThing();
 void callback(char *topic, byte *payload, unsigned int length);
 
-byte mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED};
 SPIClass ethernetSPI(ETH_SPI_BUS);
 
-EthernetClient ethClientAmazon;
-EthernetSSLClient ethClientSSL(ethClientAmazon, TAs, (size_t)TAs_NUM, 1);
+EthernetClient ethClient;
+EthernetSSLClient ethClientSSL(ethClient, TAs, (size_t)TAs_NUM, 1);
 PubSubClient mqtt_istance(mqttServer, 8883, callback, ethClientSSL);
 SSLClientParameters mTLS = SSLClientParameters::fromPEM(my_cert, sizeof my_cert, my_key, sizeof my_key);
 
@@ -84,7 +78,6 @@ void MQTTPublish(const char *topic, char *payload)
 
 void setup()
 {
-
   /*authentication on aws*/
   ethClientSSL.setMutualAuthParams(mTLS);
 
