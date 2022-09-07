@@ -3,7 +3,7 @@
 #include <Ethernet.h>
 #include <PubSubClient.h>
 #include "AWS_Root_CA.h" // This file is created using AmazonRootCA1.pem from https://www.amazontrust.com/repository/AmazonRootCA1.pem
-#include <EthernetWebServer_SSL.h>
+#include <SSL_Utility/EthernetWebServer_SSL.h>
 
 #define ETH_SPI_BUS HSPI
 #define ETH_MOSI 13
