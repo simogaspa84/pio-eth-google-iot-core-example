@@ -5,9 +5,9 @@
   EthernetWebServer_SSL is a library for the Ethernet shields to run WebServer and Client with/without SSL
 
   Use SSLClient Library code from https://github.com/OPEnSLab-OSU/SSLClient
-  
+
   Built by Khoi Hoang https://github.com/khoih-prog/EthernetWebServer_SSL
-       
+
   Version: 1.9.1
 
   Version Modified By   Date      Comments
@@ -36,48 +36,33 @@
 #ifndef ETHERNET_WEBSERVER_SSL_H
 #define ETHERNET_WEBSERVER_SSL_H
 
-#define ETHERNET_WEBSERVER_SSL_VERSION          "EthernetWebServer_SSL v1.9.1"
+#define ETHERNET_WEBSERVER_SSL_VERSION "EthernetWebServer_SSL v1.9.1"
 
-#define ETHERNET_WEBSERVER_SSL_VERSION_MAJOR    1
-#define ETHERNET_WEBSERVER_SSL_VERSION_MINOR    9
-#define ETHERNET_WEBSERVER_SSL_VERSION_PATCH    1
+#define ETHERNET_WEBSERVER_SSL_VERSION_MAJOR 1
+#define ETHERNET_WEBSERVER_SSL_VERSION_MINOR 9
+#define ETHERNET_WEBSERVER_SSL_VERSION_PATCH 1
 
-#define ETHERNET_WEBSERVER_SSL_VERSION_INT      1009001
+#define ETHERNET_WEBSERVER_SSL_VERSION_INT 1009001
 
 /////////////////////////////////////////////////////////////////////////
 
-#if ( defined(ARDUINO_PORTENTA_H7_M7) || defined(ARDUINO_PORTENTA_H7_M4) )
-  #if defined(ETHERNET_USE_PORTENTA_H7)
-    #undef ETHERNET_USE_PORTENTA_H7
-  #endif
-  #define ETHERNET_USE_PORTENTA_H7        true
-  
-  #if defined(USE_NEW_WEBSERVER_VERSION)
-    #undef USE_NEW_WEBSERVER_VERSION
-  #endif
-  #define USE_NEW_WEBSERVER_VERSION   false
-  
-  #if (_ETHERNET_WEBSERVER_LOGLEVEL_ > 2)
-    #warning Use mbed-portenta architecture for PORTENTA_H7 from EthernetWebServer_SSL
-  #endif
-#endif
 /////////////////////////////////////////////////////////////////////////
 
 #if USE_UIP_ETHERNET
-  #if (_ETHERNET_WEBSERVER_LOGLEVEL_ > 2)
-    #warning Using UIPEthernet library from EthernetWebServer
-  #endif
+#if (_ETHERNET_WEBSERVER_LOGLEVEL_ > 2)
+#warning Using UIPEthernet library from EthernetWebServer
+#endif
 #elif USE_CUSTOM_ETHERNET
-  #if (_ETHERNET_WEBSERVER_LOGLEVEL_ > 2)
-    #warning Using Custom Ethernet library from EthernetWebServer. You must include a library or error
-  #endif
-#elif !( ETHERNET_USE_PORTENTA_H7 || USE_ETHERNET_ESP8266 || USE_ETHERNET_ENC || \
-         USE_NATIVE_ETHERNET || USE_QN_ETHERNET)
-  #include <Ethernet_Generic.h>
-  
-  #if (_ETHERNET_WEBSERVER_LOGLEVEL_ > 2)
-    #warning Using Ethernet_Generic library from EthernetWebServer
-  #endif
+#if (_ETHERNET_WEBSERVER_LOGLEVEL_ > 2)
+#warning Using Custom Ethernet library from EthernetWebServer. You must include a library or error
+#endif
+#elif !(ETHERNET_USE_PORTENTA_H7 || USE_ETHERNET_ESP8266 || USE_ETHERNET_ENC || \
+        USE_NATIVE_ETHERNET || USE_QN_ETHERNET)
+//#include <Ethernet_Generic.h>
+
+#if (_ETHERNET_WEBSERVER_LOGLEVEL_ > 2)
+#warning Using Ethernet_Generic library from EthernetWebServer
+#endif
 #endif
 
 /////////////////////////////////////////////////////////////////////////
@@ -88,4 +73,4 @@
 
 /////////////////////////////////////////////////////////////////////////
 
-#endif  // ETHERNET_WEBSERVER_SSL_H
+#endif // ETHERNET_WEBSERVER_SSL_H
