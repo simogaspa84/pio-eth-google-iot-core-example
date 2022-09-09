@@ -1,0 +1,25 @@
+os: linux
+dist: focal
+language: python
+python:
+  - "3.9"
+
+# Cache PlatformIO packages using Travis CI container-based infrastructure
+cache:
+  directories:
+    - "~/.platformio"
+    - $HOME/.cache/pip
+
+env:
+  - PLATFORMIO_CI_SRC=examples/acm/acm_terminal
+  - PLATFORMIO_CI_SRC=examples/Bluetooth/WiiIRCamera PLATFORMIO_BUILD_FLAGS="-DWIICAMERA"
+  - PLATFORMIO_CI_SRC=examples/ftdi/USBFTDILoopback
+  - PLATFORMIO_CI_SRC=examples/Xbox/XBOXUSB
+  # - ...
+
+install:
+  - pip install -U platformio
+  - pio update
+
+script:
+  - pio ci --board=esp32dev  --lib="."
