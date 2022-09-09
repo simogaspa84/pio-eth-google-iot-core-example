@@ -10,16 +10,10 @@ cache:
     - "~/.platformio"
     - $HOME/.cache/pip
 
-env:
-  - PLATFORMIO_CI_SRC=examples/acm/acm_terminal
-  - PLATFORMIO_CI_SRC=examples/Bluetooth/WiiIRCamera PLATFORMIO_BUILD_FLAGS="-DWIICAMERA"
-  - PLATFORMIO_CI_SRC=examples/ftdi/USBFTDILoopback
-  - PLATFORMIO_CI_SRC=examples/Xbox/XBOXUSB
-  # - ...
-
 install:
   - pip install -U platformio
   - pio update
+  - platformio lib install 64
 
 script:
   - pio ci --board=esp32dev  --lib="."
